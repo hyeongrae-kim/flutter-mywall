@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 class DefaultLayout extends StatelessWidget {
   final AppBar? renderAppBar;
+  final bool? showAppBar;
   final Widget body;
   final String title;
 
   const DefaultLayout({
     this.renderAppBar,
+    this.showAppBar,
     required this.body,
     required this.title,
     Key? key,
@@ -15,7 +17,7 @@ class DefaultLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: renderAppBar ?? renderDefaultAppBar(context),
+      appBar: renderAppBar ?? (showAppBar==null ? renderDefaultAppBar(context) : null),
       body: body,
     );
   }
