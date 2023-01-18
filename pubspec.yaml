@@ -43,6 +43,7 @@ dependencies:
   logger: any  #for logging purpose
   photo_manager: ^2.5.2
   image_picker: ^0.8.6
+  extended_image: ^4.0.0
 
 dev_dependencies:
   flutter_test:

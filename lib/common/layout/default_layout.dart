@@ -17,7 +17,8 @@ class DefaultLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: renderAppBar ?? (showAppBar==null ? renderDefaultAppBar(context) : null),
+      appBar: renderAppBar ??
+          (showAppBar == null ? renderDefaultAppBar(context) : null),
       body: body,
     );
   }

@@ -163,9 +163,7 @@ class _PhotoSelectScreenState extends State<PhotoSelectScreen> {
                         Text(
                           _currentAlbum.name,
                           style: const TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.black
-                          ),
+                              fontSize: 16.0, color: Colors.black),
                         ),
                         _isAlbumList
                             ? const Icon(
@@ -184,7 +182,10 @@ class _PhotoSelectScreenState extends State<PhotoSelectScreen> {
                 ),
           leading: IconButton(
             color: Colors.white,
-            icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.black,),
+            icon: const Icon(
+              Icons.arrow_back_ios_outlined,
+              color: Colors.black,
+            ),
             iconSize: 16.0,
             onPressed: () {
               Navigator.of(context).pop();
@@ -210,8 +211,13 @@ class _PhotoSelectScreenState extends State<PhotoSelectScreen> {
                             });
                           },
                           child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 12.0),
+                            padding: index == 0
+                                ? const EdgeInsets.only(
+                                    top: 8.0,
+                                    left: 12.0,
+                                    right: 12.0,
+                                  )
+                                : const EdgeInsets.symmetric(horizontal: 12.0),
                             child: Row(
                               children: [
                                 _previews[index].id != 'Empty'
@@ -223,8 +229,14 @@ class _PhotoSelectScreenState extends State<PhotoSelectScreen> {
                                           fit: BoxFit.cover,
                                         ),
                                       )
-                                    : Container(width: 50, height: 50, color: Colors.black,),
-                                SizedBox(width: 10,),
+                                    : Container(
+                                        width: 50,
+                                        height: 50,
+                                        color: Colors.black,
+                                      ),
+                                SizedBox(
+                                  width: 10,
+                                ),
                                 Text(
                                   _albums[index].name,
                                   style: TextStyle(
@@ -238,9 +250,9 @@ class _PhotoSelectScreenState extends State<PhotoSelectScreen> {
                       },
                       separatorBuilder: (_, index) {
                         return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12.0),
+                          padding: EdgeInsets.only(left: 12.0),
                           child: Divider(
-                            thickness: 1,
+                            thickness: 0.8,
                             color: Colors.black.withOpacity(0.15),
                           ),
                         );
@@ -257,7 +269,7 @@ class _PhotoSelectScreenState extends State<PhotoSelectScreen> {
                       if (e.id == 'camera') {
                         return _cameraButton();
                       } else {
-                        return _gridPhotoItem(e);
+                        return _gridPhotoItem(e, _images.indexOf(e) + 1);
                       }
                     }).toList(),
                   ),
@@ -265,7 +277,7 @@ class _PhotoSelectScreenState extends State<PhotoSelectScreen> {
     );
   }
 
-  Widget _gridPhotoItem(AssetEntity e) {
+  Widget _gridPhotoItem(AssetEntity e, int idx) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
@@ -276,10 +288,27 @@ class _PhotoSelectScreenState extends State<PhotoSelectScreen> {
           ),
         );
       },
-      child: AssetEntityImage(
-        e,
-        isOriginal: false,
-        fit: BoxFit.cover,
+      child: Padding(
+        padding: idx % 3 == 0
+            ? const EdgeInsets.only(
+                left: 1.0,
+                bottom: 2.0,
+              )
+            : (idx - 1) % 3 == 0
+                ? const EdgeInsets.only(
+                    right: 1.0,
+                    bottom: 2.0,
+                  )
+                : const EdgeInsets.only(
+                    right: 1.0,
+                    left: 1.0,
+                    bottom: 2.0,
+                  ),
+        child: AssetEntityImage(
+          e,
+          isOriginal: false,
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }
@@ -289,12 +318,18 @@ class _PhotoSelectScreenState extends State<PhotoSelectScreen> {
       onTap: () {
         _loadCamera();
       },
-      child: Container(
-        color: Colors.black,
-        child: const Icon(
-          CupertinoIcons.camera,
-          color: Colors.white,
-          size: 40,
+      child: Padding(
+        padding: const EdgeInsets.only(
+          bottom: 2.0,
+          right: 1.0,
+        ),
+        child: Container(
+          color: Colors.grey.withOpacity(0.5),
+          child: const Icon(
+            CupertinoIcons.camera,
+            color: Colors.white,
+            size: 40,
+          ),
         ),
       ),
     );
