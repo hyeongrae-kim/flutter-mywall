@@ -14,6 +14,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>image_editor_common.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>image_picker_ios.xcscheme</key>
 		<dict>
 			<key>isShown</key>
