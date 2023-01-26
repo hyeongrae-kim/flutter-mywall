@@ -3,6 +3,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mywall/common/utills/photo_edit_utils.dart';
 import 'package:mywall/common/widget/photo_edit_commons.dart';
+import 'package:mywall/user/view/home_screen.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:image/image.dart' as img;
 
@@ -34,9 +35,11 @@ class _PhotoDecoScreenState extends State<PhotoDecoScreen> {
   AspectRatioItem? _aspectRatio;
   EditorCropLayerPainter? _cropLayerPainter;
   bool _cropping = false;
+  File? _imgFile;
 
   Future<void> _getImage() async {
     _memoryImage ??= await widget.e.originBytes;
+    _imgFile = await widget.e.file;
     //when back to current page, may be editorKey.currentState is not ready.
     // Future<void>.delayed(const Duration(milliseconds: 200), () {
     //   setState(() {
@@ -91,12 +94,8 @@ class _PhotoDecoScreenState extends State<PhotoDecoScreen> {
                         ),
                       )
                     : Center(
-                      child: ExtendedImage.memory(
-                          _memoryImage!,
-                          mode: ExtendedImageMode.none,
-                          extendedImageEditorKey: editorKey,
-                        ),
-                    )
+                        child: Image.memory(_memoryImage!),
+                      )
                 : const Center(
                     child: CircularProgressIndicator(),
                   ),
@@ -114,17 +113,25 @@ class _PhotoDecoScreenState extends State<PhotoDecoScreen> {
     );
   }
 
-  rotateImage(){
-    final originalImage = img.decodeImage(_memoryImage!);
-    if(originalImage==null){
-      print('error');
+  rotateImage() async {
+    // File? file = await widget.e.file;
+    if (_imgFile == null) {
+      print('null error');
       return;
     }
+    // Uint8List imageBytes = await file.readAsBytes();
+    // Uint8List imageBytes = await _imgFile!.readAsBytes();
+    final originalImage = img.decodeImage(_memoryImage!);
+    img.Image? fixedImage;
+    fixedImage = img.copyRotate(originalImage!, angle: 90);
+    File fixedFile = await _imgFile!.writeAsBytes(
+      img.encodeJpg(fixedImage),
+      flush: true,
+    );
 
-    img.Image fixedImage;
-    fixedImage = img.copyRotate(originalImage, angle: 90); // 90도 회전
-
-    _memoryImage = fixedImage.toUint8List();
+    setState(() {
+      _memoryImage = fixedFile.readAsBytesSync();
+    });
   }
 
   Future<void> _cropImage() async {
@@ -200,9 +207,7 @@ class _PhotoDecoScreenState extends State<PhotoDecoScreen> {
           ),
           IconButton(
             onPressed: () {
-              setState(() {
-                rotateImage();
-              });
+              rotateImage();
             },
             icon: const Icon(
               Icons.rotate_left,
@@ -289,7 +294,8 @@ class _PhotoDecoScreenState extends State<PhotoDecoScreen> {
                 cropOnPressed = !cropOnPressed;
               });
             } else {
-              print('완료');
+              // 사진편집 완료 후 홈으로 이동
+              Navigator.popUntil(context, ModalRoute.withName('/'));
             }
           },
           child: const Text(
