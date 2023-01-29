@@ -1,13 +1,16 @@
 import 'dart:typed_data';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mywall/common/utills/photo_edit_utils.dart';
 import 'package:mywall/common/widget/photo_edit_commons.dart';
+import 'package:mywall/user/model/wall_element_model.dart';
+import 'package:mywall/user/provider/wall_provider.dart';
 import 'package:mywall/user/view/home_screen.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:image/image.dart' as img;
 
-class PhotoDecoScreen extends StatefulWidget {
+class PhotoDecoScreen extends ConsumerStatefulWidget {
   final AssetEntity e;
 
   const PhotoDecoScreen({
@@ -16,10 +19,10 @@ class PhotoDecoScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<PhotoDecoScreen> createState() => _PhotoDecoScreenState();
+  ConsumerState<PhotoDecoScreen> createState() => _PhotoDecoScreenState();
 }
 
-class _PhotoDecoScreenState extends State<PhotoDecoScreen> {
+class _PhotoDecoScreenState extends ConsumerState<PhotoDecoScreen> {
   bool showMenus = true;
   bool cropOnPressed = false;
 
@@ -295,6 +298,7 @@ class _PhotoDecoScreenState extends State<PhotoDecoScreen> {
               });
             } else {
               // 사진편집 완료 후 홈으로 이동
+              ref.read(wallElementListProvider.notifier).append(WallElement(rawImg: _memoryImage));
               Navigator.popUntil(context, ModalRoute.withName('/'));
             }
           },

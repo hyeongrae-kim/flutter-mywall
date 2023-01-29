@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mywall/user/view/home_screen.dart';
 
 void main() {
@@ -12,15 +13,18 @@ class _MyWall extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // home: HomeScreen(),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => HomeScreen(),
-      },
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
+    return ProviderScope(
+      child: MaterialApp(
+        // home: HomeScreen(),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => HomeScreen(),
+        },
+        // home: HomeScreen(),
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
+        ),
       ),
     );
   }

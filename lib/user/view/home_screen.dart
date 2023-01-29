@@ -1,27 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mywall/common/layout/default_layout.dart';
 import 'package:mywall/decos/view/decos_list_screen.dart';
+import 'package:mywall/user/model/wall_element_model.dart';
+import 'package:mywall/user/provider/wall_provider.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool toggle = false;
 
   @override
   Widget build(BuildContext context) {
+    final List<WallElement> state = ref.watch(wallElementListProvider);
+
     return DefaultLayout(
       title: 'MyWall',
       renderAppBar: renderAppBar(),
-      body: Center(
-        child: Text('Home'),
-      ),
+      body: state.isEmpty
+          ? Center(
+              child: Text('Create your wall!'),
+            )
+          : Center(
+              child: Image.memory(
+                state[0].rawImg!,
+              ),
+            ),
     );
   }
 
