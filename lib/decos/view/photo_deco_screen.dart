@@ -298,7 +298,14 @@ class _PhotoDecoScreenState extends ConsumerState<PhotoDecoScreen> {
               });
             } else {
               // 사진편집 완료 후 홈으로 이동
-              ref.read(wallElementListProvider.notifier).append(WallElement(rawImg: _memoryImage));
+              ref.read(wallElementListProvider.notifier).append(WallElement(
+                    rawImg: _memoryImage,
+                    elementPosition: Offset(
+                      MediaQuery.of(context).size.width / 4,
+                      MediaQuery.of(context).size.height / 4,
+                    ),
+                    showEditButtons: false,
+                  ));
               Navigator.popUntil(context, ModalRoute.withName('/'));
             }
           },

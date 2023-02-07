@@ -20,7 +20,6 @@ class _MyWall extends StatelessWidget {
         routes: {
           '/': (context) => HomeScreen(),
         },
-        // home: HomeScreen(),
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,

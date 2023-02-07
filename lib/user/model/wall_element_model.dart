@@ -6,8 +6,15 @@ import 'package:flutter/material.dart';
 // text -> text
 class WallElement {
   Uint8List? rawImg;
+  Offset elementPosition;
+  int? id = -1;
+  bool showEditButtons;
 
   WallElement({
     required this.rawImg,
+    required this.elementPosition,
+    required this.showEditButtons,
+    this.id,
   });
+
 }
