@@ -13,10 +13,40 @@ class WallElementListNotifier extends StateNotifier<List<WallElement>> {
     e = WallElement(
       rawImg: e.rawImg,
       elementPosition: e.elementPosition,
+      elementWidth: e.elementWidth,
       id: state.length + 1,
-      showEditButtons: e.showEditButtons,
     );
     state = [...state, e];
+  }
+
+  delete(int id) {
+    state = [
+      for (final e in state)
+        if (e.id != id) e
+    ];
+  }
+
+  double getWidth(int id) {
+    for (final e in state) {
+      if (e.id == id && e.elementWidth != null) {
+        return e.elementWidth!;
+      }
+    }
+    print('id or element width error!');
+    return 0;
+  }
+
+  setWidth(int id, double width) {
+    state = state
+        .map((e) => e.id != id
+            ? e
+            : e = WallElement(
+                rawImg: e.rawImg,
+                elementWidth: e.elementWidth!+width,
+                elementPosition: e.elementPosition,
+                id: e.id,
+              ))
+        .toList();
   }
 
   updatePosition(int id, Offset updatePosition) {
@@ -25,23 +55,33 @@ class WallElementListNotifier extends StateNotifier<List<WallElement>> {
             ? e
             : e = WallElement(
                 rawImg: e.rawImg,
+                elementWidth: e.elementWidth,
                 elementPosition: updatePosition,
                 id: e.id,
-                showEditButtons: e.showEditButtons,
               ))
         .toList();
+    if (state[state.length - 1].id != id ||
+        state[state.length - 1].showEditButtons == false) {
+      changePriority(id);
+    }
   }
 
-  touchElement(int id) {
+  changeShowEditButtons(int id) {
+    for (final e in state) {
+      if (e.id != id) {
+        e.showEditButtons = false;
+      }
+    }
+  }
+
+  changePriority(int id) {
     WallElement? tmp;
     for (final e in state) {
       if (e.id == id) {
-        tmp = WallElement(
-          rawImg: e.rawImg,
-          elementPosition: e.elementPosition,
-          id: e.id,
-          showEditButtons: !e.showEditButtons,
-        );
+        e.showEditButtons = true;
+        tmp = e;
+      } else {
+        e.showEditButtons = false;
       }
     }
     if (tmp == null) {

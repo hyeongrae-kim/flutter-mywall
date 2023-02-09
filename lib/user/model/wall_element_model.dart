@@ -8,13 +8,16 @@ class WallElement {
   Uint8List? rawImg;
   Offset elementPosition;
   int? id = -1;
-  bool showEditButtons;
+  bool showEditButtons = false;
+  double? elementWidth;
 
   WallElement({
     required this.rawImg,
     required this.elementPosition,
-    required this.showEditButtons,
+    required this.elementWidth,
     this.id,
   });
+
+
 
 }

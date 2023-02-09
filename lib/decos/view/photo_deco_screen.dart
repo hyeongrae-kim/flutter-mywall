@@ -283,6 +283,7 @@ class _PhotoDecoScreenState extends ConsumerState<PhotoDecoScreen> {
               },
             ),
       actions: [
+        // 완료 버튼. 편집 시 편집완료, 편집하고있지 않을 시 홈으로 사진데이터 보내기
         TextButton(
           style: TextButton.styleFrom(
             textStyle: const TextStyle(
@@ -300,11 +301,11 @@ class _PhotoDecoScreenState extends ConsumerState<PhotoDecoScreen> {
               // 사진편집 완료 후 홈으로 이동
               ref.read(wallElementListProvider.notifier).append(WallElement(
                     rawImg: _memoryImage,
+                    elementWidth: MediaQuery.of(context).size.width/(1.5),
                     elementPosition: Offset(
                       MediaQuery.of(context).size.width / 4,
                       MediaQuery.of(context).size.height / 4,
                     ),
-                    showEditButtons: false,
                   ));
               Navigator.popUntil(context, ModalRoute.withName('/'));
             }
