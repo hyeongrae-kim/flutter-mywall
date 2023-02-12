@@ -301,6 +301,7 @@ class _PhotoDecoScreenState extends ConsumerState<PhotoDecoScreen> {
               // 사진편집 완료 후 홈으로 이동
               ref.read(wallElementListProvider.notifier).append(WallElement(
                     rawImg: _memoryImage,
+                    showEditButtons: false,
                     elementWidth: MediaQuery.of(context).size.width/(1.5),
                     elementPosition: Offset(
                       MediaQuery.of(context).size.width / 4,

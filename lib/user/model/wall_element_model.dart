@@ -8,16 +8,29 @@ class WallElement {
   Uint8List? rawImg;
   Offset elementPosition;
   int? id = -1;
-  bool showEditButtons = false;
+  bool? showEditButtons;
   double? elementWidth;
 
   WallElement({
     required this.rawImg,
     required this.elementPosition,
     required this.elementWidth,
+    required this.showEditButtons,
     this.id,
   });
 
-
-
+  WallElement copyWith({
+    Offset? elementPosition,
+    double? elementWidth,
+    bool? showEditButtons,
+    int? id,
+  }) {
+    return WallElement(
+      rawImg: rawImg,
+      id: id ?? this.id,
+      elementPosition: elementPosition ?? this.elementPosition,
+      elementWidth: elementWidth ?? this.elementWidth,
+      showEditButtons: showEditButtons ?? this.showEditButtons,
+    );
+  }
 }

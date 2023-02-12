@@ -9,16 +9,13 @@ final wallElementListProvider =
 class WallElementListNotifier extends StateNotifier<List<WallElement>> {
   WallElementListNotifier() : super([]);
 
+  // state 요소 추가
   append(WallElement e) {
-    e = WallElement(
-      rawImg: e.rawImg,
-      elementPosition: e.elementPosition,
-      elementWidth: e.elementWidth,
-      id: state.length + 1,
-    );
+    e = e.copyWith(id: state.length + 1);
     state = [...state, e];
   }
 
+  // state 요소 삭제
   delete(int id) {
     state = [
       for (final e in state)
@@ -36,40 +33,39 @@ class WallElementListNotifier extends StateNotifier<List<WallElement>> {
     return 0;
   }
 
+  bool getShowEditButtons(int id){
+    for(final s in state){
+      if(s.id==id){
+        return s.showEditButtons!;
+      }
+    }
+    return false;
+  }
+
+  // state 요소 width 값 수정
   setWidth(int id, double width) {
     state = state
-        .map((e) => e.id != id
-            ? e
-            : e = WallElement(
-                rawImg: e.rawImg,
-                elementWidth: e.elementWidth!+width,
-                elementPosition: e.elementPosition,
-                id: e.id,
-              ))
+        .map((e) =>
+            e.id == id ? e.copyWith(elementWidth: e.elementWidth! + width) : e)
         .toList();
   }
 
   updatePosition(int id, Offset updatePosition) {
-    state = state
-        .map((e) => e.id != id
-            ? e
-            : e = WallElement(
-                rawImg: e.rawImg,
-                elementWidth: e.elementWidth,
-                elementPosition: updatePosition,
-                id: e.id,
-              ))
-        .toList();
-    if (state[state.length - 1].id != id ||
-        state[state.length - 1].showEditButtons == false) {
-      changePriority(id);
-    }
+    state = [
+      for (final s in state)
+        if (s.id==id)
+          s.copyWith(elementPosition: updatePosition)
+        else
+          s,
+    ];
   }
 
   changeShowEditButtons(int id) {
     for (final e in state) {
       if (e.id != id) {
         e.showEditButtons = false;
+      } else {
+        e.showEditButtons = true;
       }
     }
   }
@@ -78,20 +74,17 @@ class WallElementListNotifier extends StateNotifier<List<WallElement>> {
     WallElement? tmp;
     for (final e in state) {
       if (e.id == id) {
-        e.showEditButtons = true;
-        tmp = e;
-      } else {
-        e.showEditButtons = false;
+        tmp = e.copyWith();
+        break;
       }
     }
     if (tmp == null) {
       print('id error');
       return;
     }
-
     state = [
       for (final e in state)
-        if (e.id != id) e,
+        if (e.id != id) e.copyWith(showEditButtons: false),
       tmp,
     ];
   }
