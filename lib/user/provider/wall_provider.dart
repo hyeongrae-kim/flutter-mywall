@@ -42,6 +42,10 @@ class WallElementListNotifier extends StateNotifier<List<WallElement>> {
     return false;
   }
 
+  offAllShowEditButtons(){
+    state = state.map((e) => e.copyWith(showEditButtons: false)).toList();
+  }
+
   // state 요소 width 값 수정
   setWidth(int id, double width) {
     state = state
