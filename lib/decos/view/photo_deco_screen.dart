@@ -43,6 +43,7 @@ class _PhotoDecoScreenState extends ConsumerState<PhotoDecoScreen> {
   Future<void> _getImage() async {
     _memoryImage ??= await widget.e.originBytes;
     _imgFile = await widget.e.file;
+    setState(() {});
     //when back to current page, may be editorKey.currentState is not ready.
     // Future<void>.delayed(const Duration(milliseconds: 200), () {
     //   setState(() {

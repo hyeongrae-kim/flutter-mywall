@@ -57,18 +57,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               .read(wallElementListProvider.notifier)
               .updatePosition(e.id!, updatePosition);
         },
-        onPanStart: (DragStartDetails details){
-        },
+        onPanStart: (DragStartDetails details) {},
         onPanDown: (DragDownDetails details) {
           setState(() {
-            ref
-                .read(wallElementListProvider.notifier)
-                .changeShowEditButtons(e.id!);
+            ref.read(wallElementListProvider.notifier).changePriority(e.id!);
           });
         },
-        onPanEnd: (DragEndDetails details) {
-          ref.read(wallElementListProvider.notifier).changePriority(e.id!);
-        },
+        onPanEnd: (DragEndDetails details) {},
         child: Stack(
           children: [
             Container(
@@ -76,9 +71,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               padding: EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: e.showEditButtons!
-                      ? Colors.black
-                      : Colors.transparent,
+                  color: e.showEditButtons! ? Colors.black : Colors.transparent,
                 ),
               ),
               child: selectElement(e),

@@ -218,32 +218,35 @@ class _PhotoSelectScreenState extends State<PhotoSelectScreen> {
                                     right: 12.0,
                                   )
                                 : const EdgeInsets.symmetric(horizontal: 12.0),
-                            child: Row(
-                              children: [
-                                _previews[index].id != 'Empty'
-                                    ? Container(
-                                        width: 50,
-                                        height: 50,
-                                        child: AssetEntityImage(
-                                          _previews[index],
-                                          fit: BoxFit.cover,
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Row(
+                                children: [
+                                  _previews[index].id != 'Empty'
+                                      ? Container(
+                                          width: 50,
+                                          height: 50,
+                                          child: AssetEntityImage(
+                                            _previews[index],
+                                            fit: BoxFit.cover,
+                                          ),
+                                        )
+                                      : Container(
+                                          width: 50,
+                                          height: 50,
+                                          color: Colors.black,
                                         ),
-                                      )
-                                    : Container(
-                                        width: 50,
-                                        height: 50,
-                                        color: Colors.black,
-                                      ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  _albums[index].name,
-                                  style: TextStyle(
-                                    color: Colors.black,
+                                  SizedBox(
+                                    width: 10,
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                    _albums[index].name,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         );
