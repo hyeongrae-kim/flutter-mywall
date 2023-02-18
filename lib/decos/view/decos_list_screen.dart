@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mywall/common/layout/default_layout.dart';
 import 'package:mywall/decos/view/background_color_list.dart';
 import 'package:mywall/decos/view/background_wall_list.dart';
-import 'package:mywall/decos/view/movie_poster_deco_list.dart';
+import 'package:mywall/decos/view/movie_select_screen.dart';
 import 'package:mywall/decos/view/photo_select_screen.dart';
 
 class DecorateList extends StatelessWidget {
@@ -49,13 +49,13 @@ class DecorateList extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
-                    return MoviePosterDecoList();
+                    return MovieSelectScreen();
                   },
                 ),
               );
             },
             child: ListTile(
-              title: Text('Movie Posters'),
+              title: Text('Movie Photos'),
               trailing: Icon(Icons.arrow_forward_ios),
             ),
           ),
@@ -64,7 +64,7 @@ class DecorateList extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
-                    return MoviePosterDecoList();
+                    return MovieSelectScreen();
                   },
                 ),
               );
@@ -94,7 +94,7 @@ class DecorateList extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
-                    return MoviePosterDecoList();
+                    return MovieSelectScreen();
                   },
                 ),
               );
@@ -109,7 +109,7 @@ class DecorateList extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
-                    return MoviePosterDecoList();
+                    return MovieSelectScreen();
                   },
                 ),
               );

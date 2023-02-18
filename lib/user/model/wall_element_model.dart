@@ -5,14 +5,19 @@ import 'package:flutter/material.dart';
 // img -> rawImg
 // text -> text
 class WallElement {
+  // element 종류
   Uint8List? rawImg;
+  String? movieUrl;
+
+  // 공통 속성
   Offset elementPosition;
   int? id = -1;
   bool? showEditButtons;
   double? elementWidth;
 
   WallElement({
-    required this.rawImg,
+    this.rawImg,
+    this.movieUrl,
     required this.elementPosition,
     required this.elementWidth,
     required this.showEditButtons,
@@ -27,6 +32,7 @@ class WallElement {
   }) {
     return WallElement(
       rawImg: rawImg,
+      movieUrl: movieUrl,
       id: id ?? this.id,
       elementPosition: elementPosition ?? this.elementPosition,
       elementWidth: elementWidth ?? this.elementWidth,

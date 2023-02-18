@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mywall/common/layout/default_layout.dart';
 import 'package:mywall/decos/view/decos_list_screen.dart';
 import 'package:mywall/user/component/Image_element.dart';
+import 'package:mywall/user/component/movie_element.dart';
 import 'package:mywall/user/model/wall_element_model.dart';
 import 'package:mywall/user/provider/wall_provider.dart';
 
@@ -32,19 +33,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: Text('Create your wall!'),
                 ),
               ]
-            : state
-                .map((e) => e.id != null
-                    ? renderElement(e)
-                    : Container(
-                        child: const Text('element id error'),
-                      ))
-                .toList(),
+            : state.map((e) {
+                return renderElement(e);
+              }).toList(),
       ),
     );
   }
 
   Widget renderElement(WallElement e) {
     return Positioned(
+      key: ValueKey(e.id!),
       left: e.elementPosition.dx,
       top: e.elementPosition.dy,
       child: GestureDetector(
@@ -59,9 +57,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         },
         onPanStart: (DragStartDetails details) {},
         onPanDown: (DragDownDetails details) {
-          setState(() {
-            ref.read(wallElementListProvider.notifier).changePriority(e.id!);
-          });
+          ref.read(wallElementListProvider.notifier).reOrder(e.id!);
+          setState(() {});
         },
         onPanEnd: (DragEndDetails details) {},
         child: Stack(
@@ -159,6 +156,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     if (e.rawImg != null) {
       return ImageElement(
         rawImg: e.rawImg!,
+        id: e.id!,
+      );
+    } else if (e.movieUrl != null) {
+      return MovieElement(
+        movieUrl: e.movieUrl!,
         id: e.id!,
       );
     } else {

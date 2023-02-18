@@ -64,17 +64,17 @@ class WallElementListNotifier extends StateNotifier<List<WallElement>> {
     ];
   }
 
-  // changeShowEditButtons(int id) {
-  //   for (final e in state) {
-  //     if (e.id != id) {
-  //       e.showEditButtons = false;
-  //     } else {
-  //       e.showEditButtons = true;
-  //     }
-  //   }
-  // }
+  changeShowEditButtons(int id) {
+    for (final e in state) {
+      if (e.id != id) {
+        e.showEditButtons = false;
+      } else {
+        e.showEditButtons = true;
+      }
+    }
+  }
 
-  changePriority(int id) {
+  reOrder(int id) {
     WallElement? tmp;
     for (final e in state) {
       if (e.id == id) {
