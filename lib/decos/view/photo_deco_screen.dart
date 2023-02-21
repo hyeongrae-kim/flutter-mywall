@@ -304,6 +304,9 @@ class _PhotoDecoScreenState extends ConsumerState<PhotoDecoScreen> {
                     rawImg: _memoryImage,
                     showEditButtons: false,
                     elementWidth: MediaQuery.of(context).size.width/(1.5),
+                    aspectRatio: widget.e.width/widget.e.height,
+                    angle: 0.0,
+                    baseAngle: 0.0,
                     elementPosition: Offset(
                       MediaQuery.of(context).size.width / 4,
                       MediaQuery.of(context).size.height / 4,

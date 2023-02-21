@@ -15,65 +15,7 @@ class WallElementListNotifier extends StateNotifier<List<WallElement>> {
     state = [...state, e];
   }
 
-  // state 요소 삭제
-  delete(int id) {
-    state = [
-      for (final e in state)
-        if (e.id != id) e
-    ];
-  }
-
-  double getWidth(int id) {
-    for (final e in state) {
-      if (e.id == id && e.elementWidth != null) {
-        return e.elementWidth!;
-      }
-    }
-    print('id or element width error!');
-    return 0;
-  }
-
-  bool getShowEditButtons(int id){
-    for(final s in state){
-      if(s.id==id){
-        return s.showEditButtons!;
-      }
-    }
-    return false;
-  }
-
-  offAllShowEditButtons(){
-    state = state.map((e) => e.copyWith(showEditButtons: false)).toList();
-  }
-
-  // state 요소 width 값 수정
-  setWidth(int id, double width) {
-    state = state
-        .map((e) =>
-            e.id == id ? e.copyWith(elementWidth: e.elementWidth! + width) : e)
-        .toList();
-  }
-
-  updatePosition(int id, Offset updatePosition) {
-    state = [
-      for (final s in state)
-        if (s.id==id)
-          s.copyWith(elementPosition: updatePosition)
-        else
-          s,
-    ];
-  }
-
-  changeShowEditButtons(int id) {
-    for (final e in state) {
-      if (e.id != id) {
-        e.showEditButtons = false;
-      } else {
-        e.showEditButtons = true;
-      }
-    }
-  }
-
+  // state 요소 순서 바꾸기
   reOrder(int id) {
     WallElement? tmp;
     for (final e in state) {
@@ -92,4 +34,80 @@ class WallElementListNotifier extends StateNotifier<List<WallElement>> {
       tmp.copyWith(showEditButtons: true),
     ];
   }
+
+  // state 요소 삭제
+  delete(int id) {
+    state = [
+      for (final e in state)
+        if (e.id != id) e
+    ];
+  }
+
+  double getAngle(int id) {
+    for (final e in state) {
+      if (e.id == id) {
+        return e.angle;
+      }
+    }
+    return 0.0;
+  }
+
+  double getWidth(int id) {
+    for (final e in state) {
+      if (e.id == id) {
+        return e.elementWidth;
+      }
+    }
+    return 0;
+  }
+
+  bool getShowEditButtons(int id){
+    for(final s in state){
+      if(s.id==id){
+        return s.showEditButtons!;
+      }
+    }
+    return false;
+  }
+
+  // state 요소 width 값 수정
+  setWidth(int id, double width) {
+    state = state
+        .map((e) =>
+            e.id == id ? e.copyWith(elementWidth: e.elementWidth + width) : e)
+        .toList();
+  }
+
+  // state요소 position 값 update
+  setPosition(int id, Offset updatePosition) {
+    state = [
+      for (final s in state)
+        if (s.id==id)
+          s.copyWith(elementPosition: updatePosition)
+        else
+          s,
+    ];
+  }
+
+  // state요소 anlge값 변환
+  setAngle(int id, double angle){
+    state = [
+      for (final s in state)
+        if (s.id==id)
+          s.copyWith(angle: angle)
+        else
+          s,
+    ];
+  }
+
+  setBaseAngle(int id, double baseAngle){
+    state = [
+      for (final s in state)
+        if (s.id==id)
+          s.copyWith(baseAngle: baseAngle)
+        else
+          s,
+    ];
+  }
+
 }

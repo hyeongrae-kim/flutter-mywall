@@ -51,6 +51,9 @@ class MoviePhotosScreen extends ConsumerWidget {
                                 movieUrl: 'https://image.tmdb.org/t/p/original/${model.posters[index].file_path}',
                                 showEditButtons: false,
                                 elementWidth: MediaQuery.of(context).size.width/(1.5),
+                                aspectRatio: 1/sqrt(2),
+                                angle: 0.0,
+                                baseAngle: 0.0,
                                 elementPosition: Offset(
                                   MediaQuery.of(context).size.width / 4,
                                   MediaQuery.of(context).size.height / 4,
@@ -82,7 +85,18 @@ class MoviePhotosScreen extends ConsumerWidget {
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: GestureDetector(
                             onTap: (){
-
+                              ref.read(wallElementListProvider.notifier).append(WallElement(
+                                movieUrl: 'https://image.tmdb.org/t/p/original/${model.backdrops[index].file_path}',
+                                showEditButtons: false,
+                                elementWidth: MediaQuery.of(context).size.width/(1.5),
+                                aspectRatio: 16/9,
+                                angle: 0.0,
+                                baseAngle: 0.0,
+                                elementPosition: Offset(
+                                  MediaQuery.of(context).size.width / 4,
+                                  MediaQuery.of(context).size.height / 4,
+                                ),
+                              ));
                               Navigator.popUntil(context, ModalRoute.withName('/'));
                             },
                             child: Image.network(

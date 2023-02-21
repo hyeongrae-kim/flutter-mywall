@@ -13,7 +13,10 @@ class WallElement {
   Offset elementPosition;
   int? id = -1;
   bool? showEditButtons;
-  double? elementWidth;
+  double elementWidth;
+  double aspectRatio;
+  double angle;
+  double baseAngle;
 
   WallElement({
     this.rawImg,
@@ -21,6 +24,9 @@ class WallElement {
     required this.elementPosition,
     required this.elementWidth,
     required this.showEditButtons,
+    required this.aspectRatio,
+    required this.angle,
+    required this.baseAngle,
     this.id,
   });
 
@@ -29,6 +35,9 @@ class WallElement {
     double? elementWidth,
     bool? showEditButtons,
     int? id,
+    double? aspectRatio,
+    double? angle,
+    double? baseAngle,
   }) {
     return WallElement(
       rawImg: rawImg,
@@ -36,6 +45,9 @@ class WallElement {
       id: id ?? this.id,
       elementPosition: elementPosition ?? this.elementPosition,
       elementWidth: elementWidth ?? this.elementWidth,
+      aspectRatio: aspectRatio ?? this.aspectRatio,
+      angle: angle ?? this.angle,
+      baseAngle: baseAngle ?? this.baseAngle,
       showEditButtons: showEditButtons ?? this.showEditButtons,
     );
   }
