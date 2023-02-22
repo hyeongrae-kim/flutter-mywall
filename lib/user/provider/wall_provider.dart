@@ -100,6 +100,7 @@ class WallElementListNotifier extends StateNotifier<List<WallElement>> {
     ];
   }
 
+  // state요소 baseAngle값 변환
   setBaseAngle(int id, double baseAngle){
     state = [
       for (final s in state)
@@ -107,6 +108,13 @@ class WallElementListNotifier extends StateNotifier<List<WallElement>> {
           s.copyWith(baseAngle: baseAngle)
         else
           s,
+    ];
+  }
+
+  offAllShowEditButtons(){
+    state = [
+      for (final s in state)
+        s.copyWith(showEditButtons: false),
     ];
   }
 

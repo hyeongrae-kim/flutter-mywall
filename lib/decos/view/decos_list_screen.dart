@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mywall/common/layout/default_layout.dart';
 import 'package:mywall/decos/view/background_color_list.dart';
 import 'package:mywall/decos/view/background_wall_list.dart';
+import 'package:mywall/decos/view/maskingtapes_list_screen.dart';
 import 'package:mywall/decos/view/movie_select_screen.dart';
 import 'package:mywall/decos/view/photo_select_screen.dart';
 
@@ -116,6 +117,21 @@ class DecorateList extends StatelessWidget {
             },
             child: ListTile(
               title: Text('URL Buttons'),
+              trailing: Icon(Icons.arrow_forward_ios),
+            ),
+          ),
+          GestureDetector(
+            onTap: (){
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return MaskingtapesListScreen();
+                  },
+                ),
+              );
+            },
+            child: ListTile(
+              title: Text('MaskingTapes'),
               trailing: Icon(Icons.arrow_forward_ios),
             ),
           ),

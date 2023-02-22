@@ -8,6 +8,7 @@ class WallElement {
   // element 종류
   Uint8List? rawImg;
   String? movieUrl;
+  String? assetUrl;
 
   // 공통 속성
   Offset elementPosition;
@@ -21,6 +22,7 @@ class WallElement {
   WallElement({
     this.rawImg,
     this.movieUrl,
+    this.assetUrl,
     required this.elementPosition,
     required this.elementWidth,
     required this.showEditButtons,
@@ -42,6 +44,7 @@ class WallElement {
     return WallElement(
       rawImg: rawImg,
       movieUrl: movieUrl,
+      assetUrl: assetUrl,
       id: id ?? this.id,
       elementPosition: elementPosition ?? this.elementPosition,
       elementWidth: elementWidth ?? this.elementWidth,

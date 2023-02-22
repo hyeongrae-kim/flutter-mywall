@@ -5,14 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mywall/common/layout/default_layout.dart';
 import 'package:mywall/decos/view/decos_list_screen.dart';
 import 'package:mywall/user/component/Image_element.dart';
+import 'package:mywall/user/component/asset_image_element.dart';
 import 'package:mywall/user/component/movie_element.dart';
 import 'package:mywall/user/model/wall_element_model.dart';
 import 'package:mywall/user/provider/wall_provider.dart';
 
 const editButtonSize = 32.0;
 const editIconSize = 24.0;
-const elementMarginSize = editIconSize/2;
-const elementPaddingSize = editIconSize/2;
+const elementMarginSize = editIconSize / 2;
+const elementPaddingSize = editIconSize / 2;
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({
@@ -26,7 +27,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool toggle = false;
   double angleDelta = 0;
-  Offset? center;
   late Offset initPoint;
 
   @override
@@ -36,16 +36,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return DefaultLayout(
       title: 'MyWall',
       renderAppBar: renderAppBar(),
-      body: Stack(
-        children: state.isEmpty
-            ? [
-                const Center(
-                  child: Text('Create your wall!'),
-                ),
-              ]
-            : state.map((e) {
-                return renderElement(e);
-              }).toList(),
+      body: Listener(
+        behavior: HitTestBehavior.opaque,
+        onPointerDown: (PointerDownEvent e) {
+          bool inChild = false;
+          for (final s in state) {
+            Rect rect = Rect.fromPoints(
+                s.elementPosition,
+                Offset(
+                    s.elementPosition.dx + s.elementWidth + editButtonSize + elementMarginSize,
+                    s.elementPosition.dy +
+                        s.elementWidth / s.aspectRatio + editButtonSize + elementMarginSize
+                ));
+            if (rect.contains(e.localPosition)) {
+              inChild = true;
+            }
+          }
+
+          if (inChild == false) {
+            ref.read(wallElementListProvider.notifier).offAllShowEditButtons();
+          }
+        },
+        child: Stack(
+          children: state.isEmpty
+              ? [
+            const Center(
+              child: Text('Create your wall!'),
+            ),
+          ]
+              : state.map((e) {
+            return renderElement(e);
+          }).toList(),
+        ),
       ),
     );
   }
@@ -62,13 +84,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ..scale(1.0)
           ..rotateZ(ref.read(wallElementListProvider.notifier).getAngle(e.id!)),
         child: GestureDetector(
-          onScaleStart: (details){
+          behavior: HitTestBehavior.opaque,
+          onScaleStart: (details) {
             ref.read(wallElementListProvider.notifier).reOrder(e.id!);
             setState(() {
               initPoint = details.focalPoint;
             });
           },
-          onScaleUpdate: (details){
+          onScaleUpdate: (details) {
             final dx = details.focalPoint.dx - initPoint.dx;
             final dy = details.focalPoint.dy - initPoint.dy;
             setState(() {
@@ -106,7 +129,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     color:
-                        e.showEditButtons! ? Colors.black : Colors.transparent,
+                    e.showEditButtons! ? Colors.black : Colors.transparent,
                   ),
                 ),
                 child: selectElement(e),
@@ -147,7 +170,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 child: Offstage(
                   offstage: !(e.showEditButtons!),
                   child: GestureDetector(
-                    key: const Key('draggableResizable_bottomRight_resizePoint'),
+                    key:
+                    const Key('draggableResizable_bottomRight_resizePoint'),
                     onPanUpdate: (DragUpdateDetails details) {
                       // 위치 변경
                       Offset updatePosition = Offset(
@@ -173,8 +197,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             blurRadius: 1.65,
                           ),
                         ],
-                        borderRadius:
-                            BorderRadius.circular(16.0),
+                        borderRadius: BorderRadius.circular(16.0),
                       ),
                       child: const Center(
                         child: Icon(
@@ -196,23 +219,33 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     // key: const Key('draggableResizable_rotate_gestureDetector'),
                     onScaleStart: (details) {
                       final center = Offset(
-                        editButtonSize/2 + editButtonSize/2 + e.elementWidth/2,
-                        (e.elementWidth/e.aspectRatio) + (elementMarginSize/2),
+                        editButtonSize / 2 +
+                            editButtonSize / 2 +
+                            e.elementWidth / 2,
+                        (e.elementWidth / e.aspectRatio) +
+                            (elementMarginSize / 2),
                       );
                       final offsetFromCenter = details.localFocalPoint - center;
                       setState(() =>
-                          angleDelta = e.baseAngle - offsetFromCenter.direction);
+                      angleDelta =
+                          e.baseAngle - offsetFromCenter.direction);
                     },
                     onScaleUpdate: (details) {
                       final center = Offset(
-                        editButtonSize/2 + editButtonSize/2 + e.elementWidth/2,
-                        (e.elementWidth/e.aspectRatio) + (elementMarginSize/2),
+                        editButtonSize / 2 +
+                            editButtonSize / 2 +
+                            e.elementWidth / 2,
+                        (e.elementWidth / e.aspectRatio) +
+                            (elementMarginSize / 2),
                       );
                       final offsetFromCenter = details.localFocalPoint - center;
-                      ref.read(wallElementListProvider.notifier).setAngle(e.id!, offsetFromCenter.direction + angleDelta);
+                      ref.read(wallElementListProvider.notifier).setAngle(
+                          e.id!, offsetFromCenter.direction + angleDelta);
                     },
                     onScaleEnd: (_) {
-                      ref.read(wallElementListProvider.notifier).setBaseAngle(e.id!, e.angle);
+                      ref
+                          .read(wallElementListProvider.notifier)
+                          .setBaseAngle(e.id!, e.angle);
                     },
                     child: Container(
                       width: editButtonSize,
@@ -225,8 +258,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             blurRadius: 1.65,
                           ),
                         ],
-                        borderRadius:
-                            BorderRadius.circular(16.0),
+                        borderRadius: BorderRadius.circular(16.0),
                       ),
                       child: const Center(
                         child: Icon(
@@ -258,6 +290,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         movieUrl: e.movieUrl!,
         id: e.id!,
       );
+    } else if (e.assetUrl != null) {
+      return AssetImageElement(
+        assetUrl: e.assetUrl!,
+        id: e.id!,
+      );
     } else {
       return Container();
     }
@@ -277,48 +314,48 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       actions: toggle
           ? [
-              IconButton(
-                padding: EdgeInsets.zero,
-                icon: Icon(
-                  Icons.add_box_outlined,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return DecorateList();
-                      },
-                    ),
-                  );
+        IconButton(
+          padding: EdgeInsets.zero,
+          icon: Icon(
+            Icons.add_box_outlined,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (BuildContext context) {
+                  return DecorateList();
                 },
               ),
-              IconButton(
-                padding: EdgeInsets.zero,
-                icon: Icon(
-                  Icons.save_outlined,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  setState(() {
-                    toggle = false;
-                  });
-                },
-              ),
-            ]
+            );
+          },
+        ),
+        IconButton(
+          padding: EdgeInsets.zero,
+          icon: Icon(
+            Icons.save_outlined,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            setState(() {
+              toggle = false;
+            });
+          },
+        ),
+      ]
           : [
-              IconButton(
-                icon: Icon(
-                  Icons.create_outlined,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  setState(() {
-                    toggle = true;
-                  });
-                },
-              ),
-            ],
+        IconButton(
+          icon: Icon(
+            Icons.create_outlined,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            setState(() {
+              toggle = true;
+            });
+          },
+        ),
+      ],
     );
   }
 }
