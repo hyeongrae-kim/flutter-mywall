@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mywall/common/layout/default_layout.dart';
@@ -8,12 +6,13 @@ import 'package:mywall/user/component/Image_element.dart';
 import 'package:mywall/user/component/asset_image_element.dart';
 import 'package:mywall/user/component/movie_element.dart';
 import 'package:mywall/user/model/wall_element_model.dart';
+import 'package:mywall/user/model/wall_status_model.dart';
 import 'package:mywall/user/provider/wall_provider.dart';
 
 const editButtonSize = 32.0;
 const editIconSize = 24.0;
 const elementMarginSize = editIconSize / 2;
-const elementPaddingSize = editIconSize / 2;
+const elementPaddingSize = editIconSize / 6;
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({
@@ -32,41 +31,69 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final List<WallElement> state = ref.watch(wallElementListProvider);
+    final WallStatus status = ref.watch(wallStatusProvider);
+    final Color textColor =
+        status.color == null || status.color!.computeLuminance() >= 0.5
+            ? Colors.black
+            : Colors.white;
+    print(status.assetUrl);
 
-    return DefaultLayout(
-      title: 'MyWall',
-      renderAppBar: renderAppBar(),
-      body: Listener(
-        behavior: HitTestBehavior.opaque,
-        onPointerDown: (PointerDownEvent e) {
-          bool inChild = false;
-          for (final s in state) {
-            Rect rect = Rect.fromPoints(
-                s.elementPosition,
-                Offset(
-                    s.elementPosition.dx + s.elementWidth + editButtonSize + elementMarginSize,
-                    s.elementPosition.dy +
-                        s.elementWidth / s.aspectRatio + editButtonSize + elementMarginSize
-                ));
-            if (rect.contains(e.localPosition)) {
-              inChild = true;
-            }
-          }
-
-          if (inChild == false) {
-            ref.read(wallElementListProvider.notifier).offAllShowEditButtons();
-          }
-        },
-        child: Stack(
-          children: state.isEmpty
-              ? [
-            const Center(
-              child: Text('Create your wall!'),
+    return Scaffold(
+      appBar: renderAppBar(ref),
+      backgroundColor:
+          status.assetUrl == null ? status.color : Colors.transparent,
+      body: Container(
+        decoration: status.assetUrl!=null ? BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage(
+              status.assetUrl!,
             ),
-          ]
-              : state.map((e) {
-            return renderElement(e);
-          }).toList(),
+          ),
+        ) : null,
+        child: Listener(
+          behavior: HitTestBehavior.opaque,
+          onPointerDown: (PointerDownEvent e) {
+            bool inChild = false;
+            for (final s in state) {
+              Rect rect = Rect.fromPoints(
+                  s.elementPosition,
+                  Offset(
+                      s.elementPosition.dx +
+                          s.elementWidth +
+                          editButtonSize +
+                          elementMarginSize,
+                      s.elementPosition.dy +
+                          s.elementWidth / s.aspectRatio +
+                          editButtonSize +
+                          elementMarginSize));
+              if (rect.contains(e.localPosition)) {
+                inChild = true;
+              }
+            }
+
+            if (inChild == false) {
+              ref
+                  .read(wallElementListProvider.notifier)
+                  .offAllShowEditButtons();
+            }
+          },
+          child: Stack(
+            children: state.isEmpty
+                ? [
+                    Center(
+                      child: Text(
+                        'Create your wall!',
+                        style: TextStyle(
+                          color: textColor,
+                        ),
+                      ),
+                    ),
+                  ]
+                : state.map((e) {
+                    return renderElement(e);
+                  }).toList(),
+          ),
         ),
       ),
     );
@@ -86,24 +113,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onScaleStart: (details) {
-            ref.read(wallElementListProvider.notifier).reOrder(e.id!);
-            setState(() {
-              initPoint = details.focalPoint;
-            });
+            if (toggle) {
+              ref.read(wallElementListProvider.notifier).reOrder(e.id!);
+              setState(() {
+                initPoint = details.focalPoint;
+              });
+            }
           },
           onScaleUpdate: (details) {
-            final dx = details.focalPoint.dx - initPoint.dx;
-            final dy = details.focalPoint.dy - initPoint.dy;
-            setState(() {
-              initPoint = details.focalPoint;
-            });
-            Offset updatePosition = Offset(
-              e.elementPosition.dx + dx,
-              e.elementPosition.dy + dy,
-            );
-            ref
-                .read(wallElementListProvider.notifier)
-                .setPosition(e.id!, updatePosition);
+            if (toggle) {
+              final dx = details.focalPoint.dx - initPoint.dx;
+              final dy = details.focalPoint.dy - initPoint.dy;
+              setState(() {
+                initPoint = details.focalPoint;
+              });
+              Offset updatePosition = Offset(
+                e.elementPosition.dx + dx,
+                e.elementPosition.dy + dy,
+              );
+              ref
+                  .read(wallElementListProvider.notifier)
+                  .setPosition(e.id!, updatePosition);
+            }
           },
           // onPanUpdate: (DragUpdateDetails details) {
           //   Offset updatePosition = Offset(
@@ -128,8 +159,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 padding: const EdgeInsets.all(elementPaddingSize),
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color:
-                    e.showEditButtons! ? Colors.black : Colors.transparent,
+                    color: e.showEditButtons! && toggle
+                        ? Colors.black
+                        : Colors.transparent,
                   ),
                 ),
                 child: selectElement(e),
@@ -138,7 +170,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               Positioned(
                 right: 0,
                 child: Offstage(
-                  offstage: !(e.showEditButtons!),
+                  offstage: !(e.showEditButtons! && toggle),
                   child: GestureDetector(
                     // key: const Key('draggableResizable_delete_floatingActionIcon'),
                     onTap: () {
@@ -168,10 +200,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 right: 0,
                 bottom: 0,
                 child: Offstage(
-                  offstage: !(e.showEditButtons!),
+                  offstage: !(e.showEditButtons! && toggle),
                   child: GestureDetector(
                     key:
-                    const Key('draggableResizable_bottomRight_resizePoint'),
+                        const Key('draggableResizable_bottomRight_resizePoint'),
                     onPanUpdate: (DragUpdateDetails details) {
                       // 위치 변경
                       Offset updatePosition = Offset(
@@ -214,7 +246,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               // ****************rotate button****************
               Positioned(
                 child: Offstage(
-                  offstage: !(e.showEditButtons!),
+                  offstage: !(e.showEditButtons! && toggle),
                   child: GestureDetector(
                     // key: const Key('draggableResizable_rotate_gestureDetector'),
                     onScaleStart: (details) {
@@ -226,8 +258,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             (elementMarginSize / 2),
                       );
                       final offsetFromCenter = details.localFocalPoint - center;
-                      setState(() =>
-                      angleDelta =
+                      setState(() => angleDelta =
                           e.baseAngle - offsetFromCenter.direction);
                     },
                     onScaleUpdate: (details) {
@@ -300,62 +331,71 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
   }
 
-  AppBar renderAppBar() {
+  AppBar renderAppBar(WidgetRef ref) {
+    final WallStatus status = ref.watch(wallStatusProvider);
+    final Color textColor =
+        status.color != null && status.color!.computeLuminance() >= 0.5
+            ? Colors.black
+            : Colors.white;
+
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: status.color,
       elevation: 0,
       centerTitle: false,
       title: Text(
         'MyWall',
         style: TextStyle(
           fontSize: 16.0,
-          color: Colors.black,
+          color: textColor,
         ),
       ),
       actions: toggle
           ? [
-        IconButton(
-          padding: EdgeInsets.zero,
-          icon: Icon(
-            Icons.add_box_outlined,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (BuildContext context) {
-                  return DecorateList();
+              IconButton(
+                padding: EdgeInsets.zero,
+                icon: Icon(
+                  Icons.add_box_outlined,
+                  color: textColor,
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return const DecorateList();
+                      },
+                    ),
+                  );
                 },
               ),
-            );
-          },
-        ),
-        IconButton(
-          padding: EdgeInsets.zero,
-          icon: Icon(
-            Icons.save_outlined,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            setState(() {
-              toggle = false;
-            });
-          },
-        ),
-      ]
+              IconButton(
+                padding: EdgeInsets.zero,
+                icon: Icon(
+                  Icons.save_outlined,
+                  color: textColor,
+                ),
+                onPressed: () {
+                  ref
+                      .read(wallElementListProvider.notifier)
+                      .offAllShowEditButtons();
+                  setState(() {
+                    toggle = false;
+                  });
+                },
+              ),
+            ]
           : [
-        IconButton(
-          icon: Icon(
-            Icons.create_outlined,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            setState(() {
-              toggle = true;
-            });
-          },
-        ),
-      ],
+              IconButton(
+                icon: Icon(
+                  Icons.create_outlined,
+                  color: textColor,
+                ),
+                onPressed: () {
+                  setState(() {
+                    toggle = true;
+                  });
+                },
+              ),
+            ],
     );
   }
 }

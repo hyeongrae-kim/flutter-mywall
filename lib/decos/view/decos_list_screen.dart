@@ -65,21 +65,6 @@ class DecorateList extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
-                    return MovieSelectScreen();
-                  },
-                ),
-              );
-            },
-            child: ListTile(
-              title: Text('Music'),
-              trailing: Icon(Icons.arrow_forward_ios),
-            ),
-          ),
-          GestureDetector(
-            onTap: (){
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) {
                     return PhotoSelectScreen();
                   },
                 ),
@@ -101,7 +86,7 @@ class DecorateList extends StatelessWidget {
               );
             },
             child: ListTile(
-              title: Text('Text'),
+              title: Text('Clock'),
               trailing: Icon(Icons.arrow_forward_ios),
             ),
           ),
@@ -116,7 +101,7 @@ class DecorateList extends StatelessWidget {
               );
             },
             child: ListTile(
-              title: Text('URL Buttons'),
+              title: Text('Text'),
               trailing: Icon(Icons.arrow_forward_ios),
             ),
           ),

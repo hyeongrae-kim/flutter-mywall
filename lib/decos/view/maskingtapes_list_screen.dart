@@ -34,28 +34,31 @@ class _MaskingtapesListScreenState
         ),
         itemCount: 25,
         itemBuilder: (context, index) {
-          return LayoutBuilder(builder: (context, constraints) {
-            return GestureDetector(
-              onTap: () {
-                onTap(maxWidth, maxHeight, constraints.maxWidth, index);
-                Navigator.popUntil(context, ModalRoute.withName('/'));
-              },
-              child: Padding(
-                // (식) ? 왼쪽에 배치될 경우 : (식) ? 오른쪽에 배치될 경우 : 가운데에 배치될 경우
-                padding: (index + 1) % 3 == 0
-                    ? const EdgeInsets.only(right: 8.0)
-                    : (index + 1) % 3 == 1
-                        ? const EdgeInsets.only(left: 8.0)
-                        : const EdgeInsets.symmetric(horizontal: 8.0),
-                child: SizedBox(
-                  width: constraints.maxWidth,
-                  height: constraints.maxHeight,
-                  child: Image.asset(
-                      'asset/img/maskingtapes/tape${index + 1}.png'),
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: LayoutBuilder(builder: (context, constraints) {
+              return InkWell(
+                onTap: () {
+                  onTap(maxWidth, maxHeight, constraints.maxWidth, index);
+                  Navigator.popUntil(context, ModalRoute.withName('/'));
+                },
+                child: Padding(
+                  // (식) ? 왼쪽에 배치될 경우 : (식) ? 오른쪽에 배치될 경우 : 가운데에 배치될 경우
+                  padding: (index + 1) % 3 == 0
+                      ? const EdgeInsets.only(right: 8.0)
+                      : (index + 1) % 3 == 1
+                          ? const EdgeInsets.only(left: 8.0)
+                          : const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: SizedBox(
+                    width: constraints.maxWidth,
+                    height: constraints.maxHeight,
+                    child: Image.asset(
+                        'asset/img/maskingtapes/tape${index + 1}.png'),
+                  ),
                 ),
-              ),
-            );
-          });
+              );
+            }),
+          );
         },
       ),
     );

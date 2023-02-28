@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class DefaultLayout extends StatelessWidget {
   final AppBar? renderAppBar;
   final bool? showAppBar;
+  final Color? color;
   final Widget body;
   final String title;
 
@@ -11,12 +12,14 @@ class DefaultLayout extends StatelessWidget {
     this.showAppBar,
     required this.body,
     required this.title,
+    this.color,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: color ?? Colors.white,
       appBar: renderAppBar ??
           (showAppBar == null ? renderDefaultAppBar(context) : null),
       body: body,

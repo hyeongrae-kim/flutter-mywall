@@ -1,6 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mywall/user/model/wall_element_model.dart';
+import 'package:mywall/user/model/wall_status_model.dart';
+
+final wallStatusProvider =
+    StateNotifierProvider<WallStatusNotifier, WallStatus>(
+        (ref) => WallStatusNotifier());
+
+class WallStatusNotifier extends StateNotifier<WallStatus> {
+  WallStatusNotifier() : super(WallStatus(color: Colors.white));
+
+  changeColor(Color color) {
+    state = state.copyWith(color: color, assetUrl: null);
+  }
+
+  changeWallPhoto(String? assetUrl){
+    state = state.copyWith(color: Colors.white, assetUrl: assetUrl);
+  }
+}
 
 final wallElementListProvider =
     StateNotifierProvider<WallElementListNotifier, List<WallElement>>(
@@ -61,9 +78,9 @@ class WallElementListNotifier extends StateNotifier<List<WallElement>> {
     return 0;
   }
 
-  bool getShowEditButtons(int id){
-    for(final s in state){
-      if(s.id==id){
+  bool getShowEditButtons(int id) {
+    for (final s in state) {
+      if (s.id == id) {
         return s.showEditButtons!;
       }
     }
@@ -82,40 +99,29 @@ class WallElementListNotifier extends StateNotifier<List<WallElement>> {
   setPosition(int id, Offset updatePosition) {
     state = [
       for (final s in state)
-        if (s.id==id)
-          s.copyWith(elementPosition: updatePosition)
-        else
-          s,
+        if (s.id == id) s.copyWith(elementPosition: updatePosition) else s,
     ];
   }
 
   // state요소 anlge값 변환
-  setAngle(int id, double angle){
+  setAngle(int id, double angle) {
     state = [
       for (final s in state)
-        if (s.id==id)
-          s.copyWith(angle: angle)
-        else
-          s,
+        if (s.id == id) s.copyWith(angle: angle) else s,
     ];
   }
 
   // state요소 baseAngle값 변환
-  setBaseAngle(int id, double baseAngle){
+  setBaseAngle(int id, double baseAngle) {
     state = [
       for (final s in state)
-        if (s.id==id)
-          s.copyWith(baseAngle: baseAngle)
-        else
-          s,
+        if (s.id == id) s.copyWith(baseAngle: baseAngle) else s,
     ];
   }
 
-  offAllShowEditButtons(){
+  offAllShowEditButtons() {
     state = [
-      for (final s in state)
-        s.copyWith(showEditButtons: false),
+      for (final s in state) s.copyWith(showEditButtons: false),
     ];
   }
-
 }
