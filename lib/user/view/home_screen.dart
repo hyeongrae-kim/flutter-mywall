@@ -4,6 +4,7 @@ import 'package:mywall/common/layout/default_layout.dart';
 import 'package:mywall/decos/view/decos_list_screen.dart';
 import 'package:mywall/user/component/Image_element.dart';
 import 'package:mywall/user/component/asset_image_element.dart';
+import 'package:mywall/user/component/clock_element.dart';
 import 'package:mywall/user/component/movie_element.dart';
 import 'package:mywall/user/model/wall_element_model.dart';
 import 'package:mywall/user/model/wall_status_model.dart';
@@ -36,65 +37,77 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         status.color == null || status.color!.computeLuminance() >= 0.5
             ? Colors.black
             : Colors.white;
-    print(status.assetUrl);
 
     return Scaffold(
-      appBar: renderAppBar(ref),
+      // appBar: renderAppBar(ref),
       backgroundColor:
           status.assetUrl == null ? status.color : Colors.transparent,
-      body: Container(
-        decoration: status.assetUrl!=null ? BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage(
-              status.assetUrl!,
-            ),
-          ),
-        ) : null,
-        child: Listener(
-          behavior: HitTestBehavior.opaque,
-          onPointerDown: (PointerDownEvent e) {
-            bool inChild = false;
-            for (final s in state) {
-              Rect rect = Rect.fromPoints(
-                  s.elementPosition,
-                  Offset(
-                      s.elementPosition.dx +
-                          s.elementWidth +
-                          editButtonSize +
-                          elementMarginSize,
-                      s.elementPosition.dy +
-                          s.elementWidth / s.aspectRatio +
-                          editButtonSize +
-                          elementMarginSize));
-              if (rect.contains(e.localPosition)) {
-                inChild = true;
-              }
-            }
-
-            if (inChild == false) {
-              ref
-                  .read(wallElementListProvider.notifier)
-                  .offAllShowEditButtons();
-            }
-          },
-          child: Stack(
-            children: state.isEmpty
-                ? [
-                    Center(
-                      child: Text(
-                        'Create your wall!',
-                        style: TextStyle(
-                          color: textColor,
-                        ),
+      body: Stack(
+        children: [
+          Container(
+            decoration: status.assetUrl != null
+                ? BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage(
+                        status.assetUrl!,
                       ),
                     ),
-                  ]
-                : state.map((e) {
-                    return renderElement(e);
-                  }).toList(),
+                  )
+                : null,
           ),
-        ),
+          Column(
+            children: [
+              renderAppBar(ref),
+              Expanded(
+                child: Listener(
+                  behavior: HitTestBehavior.opaque,
+                  onPointerDown: (PointerDownEvent e) {
+                    bool inChild = false;
+                    for (final s in state) {
+                      Rect rect = Rect.fromPoints(
+                          s.elementPosition,
+                          Offset(
+                              s.elementPosition.dx +
+                                  s.elementWidth +
+                                  editButtonSize +
+                                  elementMarginSize,
+                              s.elementPosition.dy +
+                                  s.elementWidth / s.aspectRatio +
+                                  editButtonSize +
+                                  elementMarginSize));
+                      if (rect.contains(e.localPosition)) {
+                        inChild = true;
+                      }
+                    }
+
+                    if (inChild == false) {
+                      ref
+                          .read(wallElementListProvider.notifier)
+                          .offAllShowEditButtons();
+                    }
+                  },
+                  child: Stack(
+                    children: state.isEmpty
+                        ? [
+                            Center(
+                              child: Text(
+                                'Create your wall!',
+                                style: TextStyle(
+                                  color: textColor,
+                                ),
+                              ),
+                            ),
+                          ]
+                        : state.map((e) {
+                            return renderElement(e);
+                          }).toList(),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -326,6 +339,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         assetUrl: e.assetUrl!,
         id: e.id!,
       );
+    } else if (e.clockIndex != null) {
+      return SizedBox(
+        width: e.elementWidth,
+        height: e.elementWidth/e.aspectRatio,
+        child: ClockElement(
+          id: e.id!,
+        ),
+      );
     } else {
       return Container();
     }
@@ -339,7 +360,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             : Colors.white;
 
     return AppBar(
-      backgroundColor: status.color,
+      backgroundColor:
+          status.assetUrl == null ? status.color : Colors.transparent,
       elevation: 0,
       centerTitle: false,
       title: Text(

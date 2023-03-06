@@ -9,6 +9,7 @@ class WallElement {
   Uint8List? rawImg;
   String? movieUrl;
   String? assetUrl;
+  int? clockIndex;
 
   // 공통 속성
   Offset elementPosition;
@@ -23,6 +24,7 @@ class WallElement {
     this.rawImg,
     this.movieUrl,
     this.assetUrl,
+    this.clockIndex,
     required this.elementPosition,
     required this.elementWidth,
     required this.showEditButtons,
@@ -45,6 +47,7 @@ class WallElement {
       rawImg: rawImg,
       movieUrl: movieUrl,
       assetUrl: assetUrl,
+      clockIndex: clockIndex,
       id: id ?? this.id,
       elementPosition: elementPosition ?? this.elementPosition,
       elementWidth: elementWidth ?? this.elementWidth,

@@ -15,7 +15,7 @@ class WallStatusNotifier extends StateNotifier<WallStatus> {
   }
 
   changeWallPhoto(String? assetUrl){
-    state = state.copyWith(color: Colors.white, assetUrl: assetUrl);
+    state = state.copyWith(assetUrl: assetUrl);
   }
 }
 

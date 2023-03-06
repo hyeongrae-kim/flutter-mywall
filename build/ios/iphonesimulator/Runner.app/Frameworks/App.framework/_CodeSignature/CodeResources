@@ -10,7 +10,7 @@
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		jkSQ2sEsuCzUtLnlMMI4pbRoYwA=
+		mZTBozk1OlmnbdLYKiWXgBMyAY8=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -124,6 +124,38 @@
 		<data>
 		f6orWUh2IeDpGORdNUI+CbDKs2Y=
 		</data>
+		<key>flutter_assets/asset/img/wallphotos/wallphoto1.jpg</key>
+		<data>
+		6/N88m4oZ9r+pTnaMYoVEIrSPEo=
+		</data>
+		<key>flutter_assets/asset/img/wallphotos/wallphoto2.jpg</key>
+		<data>
+		kGfngEq6rlgJg068fTi5rF6EhVQ=
+		</data>
+		<key>flutter_assets/asset/img/wallphotos/wallphoto3.jpg</key>
+		<data>
+		4GI/My2rnv2vvRF1+JinIqeLGT4=
+		</data>
+		<key>flutter_assets/asset/img/wallphotos/wallphoto4.jpg</key>
+		<data>
+		DBZDK77Xh/s+JnDjcoX1ZxMWWoU=
+		</data>
+		<key>flutter_assets/asset/img/wallphotos/wallphoto5.jpg</key>
+		<data>
+		AGsqq8BkgLZ7DvjR56iS7YdY6+4=
+		</data>
+		<key>flutter_assets/asset/img/wallphotos/wallphoto6.jpg</key>
+		<data>
+		42tbfy4N3q6IZ0GUkGdqNqR5Oog=
+		</data>
+		<key>flutter_assets/asset/img/wallphotos/wallphoto7.jpg</key>
+		<data>
+		opR1lPCbermR65mKx9IQSPG34fE=
+		</data>
+		<key>flutter_assets/asset/img/wallphotos/wallphoto8.jpg</key>
+		<data>
+		vgIQ1ojHhvDF3UjyPGFkm9zPxFA=
+		</data>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<data>
 		/CUoTuPQqqdexfyOT9lpJhV+2MQ=
@@ -134,7 +166,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		+c9yPXiH/BOfhrK1fZbGssIuxHI=
+		MwNTPRSxElO+9siT19RsFqIWaaU=
 		</data>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
 		<data>
@@ -159,7 +191,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			FEhkMizw/UENJDbUeTl7TbvKgXGZJ/2pI5aoF6Bj8i0=
+			3ma4/+lmkBgEzv6H7C/vuN5nrFvdeqSAGaaCWiQh554=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -351,6 +383,62 @@
 			6QmZtaVRXQGoB78F3D00MR2ox9BE6XJdpd8KW3n1CXA=
 			</data>
 		</dict>
+		<key>flutter_assets/asset/img/wallphotos/wallphoto1.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			To4b3xKX/pTnAD6JgqjuKkkAuNO8mQ+FeTg3iqwOvtM=
+			</data>
+		</dict>
+		<key>flutter_assets/asset/img/wallphotos/wallphoto2.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ReLbAdsV3RrrKlMYZ731QF/AAojzxcoFTx++i8odLfo=
+			</data>
+		</dict>
+		<key>flutter_assets/asset/img/wallphotos/wallphoto3.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			05v4U8lf8xRC4VRW028PZtdi/HppDsZDYaCqgSgoa4g=
+			</data>
+		</dict>
+		<key>flutter_assets/asset/img/wallphotos/wallphoto4.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			cckLrT10BlJAiLAmqqMtayM7Mlcvrz4C+Beh2MIr/h0=
+			</data>
+		</dict>
+		<key>flutter_assets/asset/img/wallphotos/wallphoto5.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			NN9ECmVXgUXqOeExPTbO8x21IPp8E/+8b0AEpu6LtNQ=
+			</data>
+		</dict>
+		<key>flutter_assets/asset/img/wallphotos/wallphoto6.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			WLpLprPd7Q3/Qbye07DjEBoX7mFAh6r+RJ5/uuM7SOI=
+			</data>
+		</dict>
+		<key>flutter_assets/asset/img/wallphotos/wallphoto7.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			9p6Sh08PvYX8YUBkNLcI254G2H/pZGmfop3ktHli1A4=
+			</data>
+		</dict>
+		<key>flutter_assets/asset/img/wallphotos/wallphoto8.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ocD4n1TDVrsOWrjUjkGMJP58HqbXDS30UwWNvxlzA3M=
+			</data>
+		</dict>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<dict>
 			<key>hash2</key>
@@ -369,7 +457,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			iqORTLnRzr+SeAmeonZU1a1lL5xKUZrsyZy9NDMj1v4=
+			SXlWoDtFxyRa4B263WvJoQwX2Rqk7XD/KWwgmM3Sb6I=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
