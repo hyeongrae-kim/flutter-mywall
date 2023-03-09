@@ -47,13 +47,14 @@ class _ClockElementState extends ConsumerState<ClockElement>
     return Flow(
       delegate: ClockDelegate(ctrl),
       children: [
-        Image.file(
-          File(
-              '/Users/hyeongraekim/flutter_project/mywall/asset/img/clock/clock1.png'),
-        ),
-        Image.file(File('/Users/hyeongraekim/flutter_project/mywall/asset/img/clock/hour_hand1.png')),
-        Image.file(File('/Users/hyeongraekim/flutter_project/mywall/asset/img/clock/minute_hand1.png')),
-        Image.file(File('/Users/hyeongraekim/flutter_project/mywall/asset/img/clock/second_hand1.png')),
+        Image.file(File(
+            '/Users/hyeongraekim/flutter_project/mywall/asset/img/clock/clock1.png')),
+        Image.file(File(
+            '/Users/hyeongraekim/flutter_project/mywall/asset/img/clock/hour_hand1.png')),
+        Image.file(File(
+            '/Users/hyeongraekim/flutter_project/mywall/asset/img/clock/minute_hand1.png')),
+        Image.file(File(
+            '/Users/hyeongraekim/flutter_project/mywall/asset/img/clock/second_hand1.png')),
       ],
     );
   }
@@ -76,19 +77,20 @@ class ClockDelegate extends FlowDelegate {
     // paint hour hand
     final hourSize = context.getChildSize(1)!;
     final hourMatrix = composeMatrixFromOffsets(
-      rotation: ((2*pi/12)*(now.hour%12)+(2 * pi / 60)*now.minute/12) ,
+      rotation:
+          ((2 * pi / 12) * (now.hour % 12) + (2 * pi / 60) * now.minute / 12),
       translate: center,
-      anchor: hourSize.center(Offset(0, hourSize.height/3.8)),
-      scale: context.size.shortestSide*0.3 / hourSize.width,
+      anchor: hourSize.center(Offset(0, hourSize.height / 3.8)),
+      scale: context.size.shortestSide * 0.3 / hourSize.width,
     );
     context.paintChild(1, transform: hourMatrix);
 
     // paint minute hand
     final minutesSize = context.getChildSize(2)!;
     final minutesMatrix = composeMatrixFromOffsets(
-      rotation: (2*pi/60)*now.minute,
+      rotation: (2 * pi / 60) * now.minute,
       translate: center,
-      anchor: minutesSize.center(Offset(0, minutesSize.height/3)),
+      anchor: minutesSize.center(Offset(0, minutesSize.height / 3)),
       scale: context.size.shortestSide * 0.4 / minutesSize.width,
     );
     context.paintChild(2, transform: minutesMatrix);
@@ -96,9 +98,9 @@ class ClockDelegate extends FlowDelegate {
     // paint second hand
     final secondsSize = context.getChildSize(3)!;
     final secondsMatrix = composeMatrixFromOffsets(
-      rotation: (2*pi/60)*now.second,
+      rotation: (2 * pi / 60) * now.second,
       translate: center,
-      anchor:  secondsSize.center(Offset(0, secondsSize.height/3)),
+      anchor: secondsSize.center(Offset(0, secondsSize.height / 3)),
       scale: context.size.shortestSide * 0.4 / secondsSize.width, // 2.25
     );
     context.paintChild(3, transform: secondsMatrix);

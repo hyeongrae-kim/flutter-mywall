@@ -1,6 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mywall/common/layout/default_layout.dart';
 import 'package:mywall/decos/view/decos_list_screen.dart';
 import 'package:mywall/user/component/Image_element.dart';
 import 'package:mywall/user/component/asset_image_element.dart';
@@ -9,6 +9,8 @@ import 'package:mywall/user/component/movie_element.dart';
 import 'package:mywall/user/model/wall_element_model.dart';
 import 'package:mywall/user/model/wall_status_model.dart';
 import 'package:mywall/user/provider/wall_provider.dart';
+
+import 'login_screen.dart';
 
 const editButtonSize = 32.0;
 const editIconSize = 24.0;
@@ -38,77 +40,128 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ? Colors.black
             : Colors.white;
 
-    return Scaffold(
-      // appBar: renderAppBar(ref),
-      backgroundColor:
-          status.assetUrl == null ? status.color : Colors.transparent,
-      body: Stack(
-        children: [
-          Container(
-            decoration: status.assetUrl != null
-                ? BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage(
-                        status.assetUrl!,
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (_, AsyncSnapshot<User?> user) {
+        if (!user.hasData) {
+          return const LoginScreen();
+        } else if (user.data != null && user.data!.emailVerified == false) {
+          return Scaffold(
+            body: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Email is not verified.'),
+                  const Text('Press the below button if you confimred email.'),
+                  TextButton(
+                    onPressed: () async {
+                      final u = FirebaseAuth.instance.currentUser!;
+                      await u.reload();
+                      setState(() {});
+                    },
+                    child: const Text('I confirmed Email'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          return Scaffold(
+            drawer: Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  UserAccountsDrawerHeader(
+                    accountName: user.data!.displayName != null
+                        ? Text(user.data!.displayName!)
+                        : Text(''),
+                    accountEmail: Text(user.data!.email!),
+                  ),
+                  InkWell(
+                      onTap: () async {
+                        await FirebaseAuth.instance.signOut();
+                        setState(() {});
+                      },
+                      child: const ListTile(
+                        title: Text('Logout'),
+                        leading: Icon(Icons.logout),
+                      )),
+                ],
+              ),
+            ),
+            backgroundColor:
+                status.assetUrl == null ? status.color : Colors.transparent,
+            body: Stack(
+              children: [
+                Container(
+                  decoration: status.assetUrl != null
+                      ? BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage(
+                              status.assetUrl!,
+                            ),
+                          ),
+                        )
+                      : null,
+                ),
+                Column(
+                  children: [
+                    renderAppBar(ref),
+                    Expanded(
+                      child: Listener(
+                        behavior: HitTestBehavior.opaque,
+                        onPointerDown: (PointerDownEvent e) {
+                          bool inChild = false;
+                          for (final s in state) {
+                            Rect rect = Rect.fromPoints(
+                                s.elementPosition,
+                                Offset(
+                                    s.elementPosition.dx +
+                                        s.elementWidth +
+                                        editButtonSize +
+                                        elementMarginSize,
+                                    s.elementPosition.dy +
+                                        s.elementWidth / s.aspectRatio +
+                                        editButtonSize +
+                                        elementMarginSize));
+                            if (rect.contains(e.localPosition)) {
+                              inChild = true;
+                            }
+                          }
+
+                          if (inChild == false) {
+                            ref
+                                .read(wallElementListProvider.notifier)
+                                .offAllShowEditButtons();
+                          }
+                        },
+                        child: Stack(
+                          children: state.isEmpty
+                              ? [
+                                  Center(
+                                    child: Text(
+                                      'Create your wall!',
+                                      style: TextStyle(
+                                        color: textColor,
+                                      ),
+                                    ),
+                                  ),
+                                ]
+                              : state.map((e) {
+                                  return renderElement(e);
+                                }).toList(),
+                        ),
                       ),
                     ),
-                  )
-                : null,
-          ),
-          Column(
-            children: [
-              renderAppBar(ref),
-              Expanded(
-                child: Listener(
-                  behavior: HitTestBehavior.opaque,
-                  onPointerDown: (PointerDownEvent e) {
-                    bool inChild = false;
-                    for (final s in state) {
-                      Rect rect = Rect.fromPoints(
-                          s.elementPosition,
-                          Offset(
-                              s.elementPosition.dx +
-                                  s.elementWidth +
-                                  editButtonSize +
-                                  elementMarginSize,
-                              s.elementPosition.dy +
-                                  s.elementWidth / s.aspectRatio +
-                                  editButtonSize +
-                                  elementMarginSize));
-                      if (rect.contains(e.localPosition)) {
-                        inChild = true;
-                      }
-                    }
-
-                    if (inChild == false) {
-                      ref
-                          .read(wallElementListProvider.notifier)
-                          .offAllShowEditButtons();
-                    }
-                  },
-                  child: Stack(
-                    children: state.isEmpty
-                        ? [
-                            Center(
-                              child: Text(
-                                'Create your wall!',
-                                style: TextStyle(
-                                  color: textColor,
-                                ),
-                              ),
-                            ),
-                          ]
-                        : state.map((e) {
-                            return renderElement(e);
-                          }).toList(),
-                  ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-        ],
-      ),
+              ],
+            ),
+          );
+        }
+      },
     );
   }
 
@@ -342,7 +395,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     } else if (e.clockIndex != null) {
       return SizedBox(
         width: e.elementWidth,
-        height: e.elementWidth/e.aspectRatio,
+        height: e.elementWidth / e.aspectRatio,
         child: ClockElement(
           id: e.id!,
         ),
@@ -360,6 +413,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             : Colors.white;
 
     return AppBar(
+      iconTheme: IconThemeData(color: textColor),
       backgroundColor:
           status.assetUrl == null ? status.color : Colors.transparent,
       elevation: 0,
