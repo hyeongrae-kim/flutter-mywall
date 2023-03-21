@@ -168,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextButton.styleFrom(
                               // foregroundColor: isGuide ? Colors.grey : Colors.black,
                               ),
-                          child: const Text('Sign up with Google'),
+                          child: const Text('Sign in with Google'),
                         ),
                       ),
                     ],

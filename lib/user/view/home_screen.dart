@@ -9,6 +9,7 @@ import 'package:mywall/user/component/movie_element.dart';
 import 'package:mywall/user/model/wall_element_model.dart';
 import 'package:mywall/user/model/wall_status_model.dart';
 import 'package:mywall/user/provider/wall_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'login_screen.dart';
 
@@ -30,6 +31,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool toggle = false;
   double angleDelta = 0;
   late Offset initPoint;
+
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
