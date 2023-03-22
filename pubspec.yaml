@@ -52,6 +52,7 @@ dependencies:
   google_sign_in: ^6.0.2
   cloud_firestore: ^4.4.4
   firebase_storage: ^11.0.16
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -79,6 +80,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - lib/.env
     - asset/img/maskingtapes/
     - asset/img/wallphotos/
   # To add assets to your application, add an assets section, like this:

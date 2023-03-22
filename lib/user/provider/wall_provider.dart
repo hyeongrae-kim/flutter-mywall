@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mywall/user/model/wall_element_model.dart';
@@ -85,6 +87,16 @@ class WallElementListNotifier extends StateNotifier<List<WallElement>> {
       }
     }
     return false;
+  }
+
+  List<Uint8List> getRawImages(){
+    List<Uint8List> result = [];
+    for (final s in state) {
+      if (s.rawImg!=null){
+        result.add(s.rawImg!);
+      }
+    }
+    return result;
   }
 
   // state 요소 width 값 수정

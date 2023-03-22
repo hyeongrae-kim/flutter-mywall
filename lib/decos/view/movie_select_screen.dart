@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mywall/common/layout/default_layout.dart';
 import 'package:mywall/decos/component/movie_card.dart';
 import 'package:mywall/decos/model/movie_images_list_model.dart';
@@ -53,7 +54,7 @@ class _MovieSelectScreenState extends State<MovieSelectScreen> {
                     final resp = await Dio().get(
                       'https://api.themoviedb.org/3/search/movie',
                       queryParameters: {
-                        "api_key": "b993c9008004b1408e494698fc232c86",
+                        "api_key": dotenv.env['appKey'],
                         "query": text,
                       },
                     );
